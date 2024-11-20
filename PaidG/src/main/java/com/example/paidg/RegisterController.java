@@ -38,8 +38,6 @@ public class RegisterController {
     @FXML
     private Button signUpButton;
     @FXML
-    private Button signInButton;
-    @FXML
     private ToggleGroup genderToggleGroup;
 
     @FXML
@@ -79,22 +77,6 @@ public class RegisterController {
         }
     }
 
-    @FXML
-    private void onSignInButtonClick() {
-        try {
-            // Load the new scene (games.fxml)
-            AnchorPane pane = FXMLLoader.load(getClass().getResource("games.fxml"));
-            Scene scene = new Scene(pane);
-
-            // Get the current stage and set the new scene
-            Stage stage = (Stage) signInButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Failed to load games page.");
-        }
-    }
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(AlertType.INFORMATION);

@@ -13,15 +13,20 @@
 
 <AnchorPane prefWidth="1045.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.paidg.GameController">
    <children>
-      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="689.0" prefWidth="1046.0" style="-fx-background-color: #1B2838;">
+      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="722.0" prefWidth="1046.0" style="-fx-background-color: #1B2838;">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="944.0" prefWidth="1029.0" style="-fx-background-color: #1b2838;">
                <children>
                   <Pane layoutX="362.0" layoutY="513.0" prefHeight="343.0" prefWidth="302.0" style="-fx-background-radius: 100;">
                      <children>
+                        <ImageView fitHeight="275.0" fitWidth="306.0" layoutX="-2.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../image/hero_capsule.jpg" />
+                           </image>
+                        </ImageView>
                         <Pane layoutY="259.0" prefHeight="83.0" prefWidth="306.0" style="-fx-background-color: #02141F;">
                            <children>
-                              <Text fill="#c7d5e0" layoutX="34.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="God of War">
+                              <Text fill="#c7d5e0" layoutX="34.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GTA V">
                                  <font>
                                     <Font name="Segoe UI Bold" size="18.0" />
                                  </font>
@@ -33,51 +38,23 @@
                               </Button>
                            </children>
                         </Pane>
-                        <ImageView fitHeight="275.0" fitWidth="306.0" layoutX="-2.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../image/hero_capsule.jpg" />
-                           </image>
-                        </ImageView>
                      </children>
                   </Pane>
-                  <Pane layoutX="691.0" layoutY="513.0" prefHeight="332.0" prefWidth="302.0" style="-fx-background-radius: 100;">
+                  <Pane layoutX="46.0" layoutY="92.0" prefHeight="341.0" prefWidth="302.0" style="-fx-background-radius: 100;">
                      <children>
-                        <ImageView fitHeight="275.0" fitWidth="306.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="294.0" fitWidth="305.0" layoutX="1.0" layoutY="-7.0">
                            <image>
-                              <Image url="@../../../image/hero_capsule.jpg" />
+                              <Image url="@../../../image/Summertime-Saga-Logo.png" />
                            </image>
                         </ImageView>
-                        <Pane layoutY="259.0" prefHeight="77.0" prefWidth="306.0" style="-fx-background-color: #02141F;">
+                        <Pane layoutY="259.0" prefHeight="86.0" prefWidth="306.0" style="-fx-background-color: #02141F;">
                            <children>
-                              <Text fill="#c7d5e0" layoutX="14.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Grand Theft Auto V">
+                              <Text fill="#c7d5e0" layoutX="14.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Summertime SAGA">
                                  <font>
                                     <Font name="Segoe UI Bold" size="18.0" />
                                  </font>
                               </Text>
                               <Button fx:id="buyGTAV" layoutX="193.0" layoutY="31.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="99.0" style="-fx-background-color: #5B8029; -fx-background-radius: 10;" text="Download" textFill="#d7dde1">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="14.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </Pane>
-                     </children>
-                  </Pane>
-                  <Pane layoutX="38.0" layoutY="90.0" prefHeight="346.0" prefWidth="302.0" style="-fx-background-radius: 100;">
-                     <children>
-                        <ImageView fitHeight="306.0" fitWidth="306.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../image/unnamed.png" />
-                           </image>
-                        </ImageView>
-                        <Pane layoutX="-2.0" layoutY="259.0" prefHeight="86.0" prefWidth="308.0" style="-fx-background-color: #02141F;">
-                           <children>
-                              <Text fill="#c7d5e0" layoutX="33.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stickman Razell">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="18.0" />
-                                 </font>
-                              </Text>
-                              <Button fx:id="buyStickman" layoutX="195.0" layoutY="24.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="99.0" style="-fx-background-color: #5B8029; -fx-background-radius: 10;" text="Download" textFill="#d7dde1">
                                  <font>
                                     <Font name="Segoe UI Bold" size="14.0" />
                                  </font>
@@ -155,6 +132,29 @@
                         </Pane>
                      </children>
                   </FlowPane>
+                  <Pane layoutX="705.0" layoutY="509.0" prefHeight="346.0" prefWidth="302.0" style="-fx-background-radius: 100;">
+                     <children>
+                        <ImageView fitHeight="306.0" fitWidth="306.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../image/unnamed.png" />
+                           </image>
+                        </ImageView>
+                        <Pane layoutX="-2.0" layoutY="259.0" prefHeight="86.0" prefWidth="308.0" style="-fx-background-color: #02141F;">
+                           <children>
+                              <Text fill="#c7d5e0" layoutX="33.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stickman Razell">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                              <Button fx:id="buyStickman" layoutX="195.0" layoutY="24.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="99.0" style="-fx-background-color: #5B8029; -fx-background-radius: 10;" text="Download" textFill="#d7dde1">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </Pane>
+                     </children>
+                  </Pane>
                </children>
             </AnchorPane>
          </content>
@@ -170,12 +170,12 @@
                         <Font name="Segoe UI Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="GamesBought" layoutX="207.0" layoutY="21.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="124.0" style="-fx-background-color: #2a475e; -fx-background-radius: 10;" text="Games bought" textFill="#c7d5e0">
+                  <Button fx:id="GamesBought" layoutX="173.0" layoutY="21.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="158.0" style="-fx-background-color: #2a475e; -fx-background-radius: 10;" text="Games downloaded" textFill="#c7d5e0">
                      <font>
                         <Font name="Segoe UI Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="EditAccount" layoutX="64.0" layoutY="21.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="124.0" style="-fx-background-color: #2a475e; -fx-background-radius: 10;" text="Edit Account" textFill="#c7d5e0">
+                  <Button fx:id="EditAccount" layoutX="40.0" layoutY="21.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="124.0" style="-fx-background-color: #2a475e; -fx-background-radius: 10;" text="Edit Account" textFill="#c7d5e0">
                      <font>
                         <Font name="Segoe UI Bold" size="14.0" />
                      </font>
