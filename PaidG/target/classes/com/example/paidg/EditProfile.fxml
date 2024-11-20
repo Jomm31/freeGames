@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="507.0" style="-fx-background-color: #212328;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.paidg.EditProfileController">
+   <children>
+      <Text fill="#c7d5e0" layoutX="24.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit Profile">
+         <font>
+            <Font name="Segoe UI Bold" size="31.0" />
+         </font>
+      </Text>
+      <TextField fx:id="firstNameEditField" layoutX="27.0" layoutY="80.0" prefHeight="42.0" prefWidth="218.0" promptText="First name" style="-fx-background-color: #32353C; -fx-background-radius: 10; -fx-text-fill: white;">
+         <font>
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="lastNameEditField" layoutX="256.0" layoutY="80.0" prefHeight="42.0" prefWidth="218.0" promptText="Last name" style="-fx-background-color: #32353C; -fx-background-radius: 10; -fx-text-fill: white;">
+         <font>
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="emailEditField" layoutX="27.0" layoutY="133.0" prefHeight="42.0" prefWidth="448.0" promptText="Email" style="-fx-background-color: #32353C; -fx-background-radius: 10; -fx-text-fill: white;">
+         <font>
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font>
+      </TextField>
+      <PasswordField fx:id="passwordEditField" layoutX="27.0" layoutY="185.0" prefHeight="42.0" prefWidth="448.0" promptText="Password" style="-fx-background-color: #32353C; -fx-background-radius: 10; -fx-text-fill: white;">
+         <font>
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font>
+      </PasswordField>
+      <PasswordField fx:id="confirmPasswordEditField" layoutX="27.0" layoutY="238.0" prefHeight="42.0" prefWidth="448.0" promptText="Confirm Password" style="-fx-background-color: #32353C; -fx-background-radius: 10; -fx-text-fill: white;">
+         <font>
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font>
+      </PasswordField>
+      <RadioButton fx:id="femaleRadioEdit" layoutX="56.0" layoutY="324.0" mnemonicParsing="false" text="Female" textFill="#c7d5e0">
+         <font>
+            <Font name="Segoe UI Bold" size="18.0" />
+         </font>
+         <toggleGroup>
+            <ToggleGroup fx:id="Edittoogle" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="maleEditRadio" layoutX="191.0" layoutY="324.0" mnemonicParsing="false" text="Male" textFill="#c7d5e0" toggleGroup="$Edittoogle">
+         <font>
+            <Font name="Segoe UI Bold" size="18.0" />
+         </font>
+      </RadioButton>
+      <RadioButton fx:id="othersRadioEdit" layoutX="310.0" layoutY="324.0" mnemonicParsing="false" text="Others" textFill="#c7d5e0" toggleGroup="$Edittoogle">
+         <font>
+            <Font name="Segoe UI Bold" size="18.0" />
+         </font>
+      </RadioButton>
+      <Text fill="#a8a8a8" layoutX="27.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender">
+         <font>
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font>
+      </Text>
+      <Text fill="#a8a8a8" layoutX="25.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Birthday">
+         <font>
+            <Font name="Segoe UI Bold" size="12.0" />
+         </font>
+      </Text>
+      <DatePicker fx:id="birthdayPickerEdit" layoutX="49.0" layoutY="398.0" prefHeight="41.0" prefWidth="394.0" style="-fx-background-color: #32353C; -fx-background-radius: 10;" />
+      <Button fx:id="SubmitEditButton" layoutX="109.0" layoutY="468.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="245.0" style="-fx-background-color: #2583FF; -fx-background-radius: 10;" text="Edit Account" textFill="#c5d3de">
+         <font>
+            <Font name="Segoe UI Bold" size="20.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>
