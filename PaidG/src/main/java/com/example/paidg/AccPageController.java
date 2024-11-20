@@ -17,112 +17,124 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Controller for the Sign-In Page.
+ * Handles user authentication and navigation to other pages.
+ */
 public class AccPageController {
 
-
-
     @FXML
-    private TextField SignInemailField;
+    private TextField signInEmailField;
     @FXML
-    private PasswordField SignInpassword;
+    private PasswordField signInPassword;
     @FXML
     private Button signInButton;
 
-    public static int user_id;
+    public static int userId;
+
+    /**
+     * Navigates to the Registration page when the "Sign Up" button is clicked.
+     */
     @FXML
     protected void onSignUpButtonClick() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Register.fxml"));
-            Parent registerPane = fxmlLoader.load();
-            Stage stage = (Stage) signInButton.getScene().getWindow();
-            Scene scene = new Scene(registerPane);
-            stage.setScene(scene);
-            stage.setTitle("Register"); // Set the title of the new scene
-            stage.show();
-        } catch (IOException e) {
-            showAlert("Error", "Failed to load registration page.");
-            e.printStackTrace();
-        }
+        navigateToPage("Register.fxml", "Register");
     }
 
+    /**
+     * Handles the Login button click event.
+     * Validates input fields, authenticates the user, and navigates to the Games page if successful.
+     */
     @FXML
     protected void onLoginButtonClick() {
-        String email = SignInemailField.getText();
-        String password = SignInpassword.getText();
+        String email = signInEmailField.getText();
+        String password = signInPassword.getText();
 
+        // Validate input fields
         if (email.isEmpty() || password.isEmpty()) {
             showAlert("Error", "Email and password must be filled out.");
             return;
         }
 
+        // Authenticate user
         if (authenticateUser(email, password)) {
-            openGamesPage();
+            navigateToPage("Games.fxml", "Games");
         } else {
             showAlert("Error", "Invalid email or password.");
         }
     }
 
+    /**
+     * Authenticates the user by verifying their email and password against the database.
+     *
+     * @param email    The user's email.
+     * @param password The user's password.
+     * @return true if authentication is successful, false otherwise.
+     */
     private boolean authenticateUser(String email, String password) {
-        Connection connection = Database.connectDb();
-        if (connection == null) {
-            showAlert("Error", "Failed to connect to the database.");
-            return false;
-        }
-
-        // Modified SQL query to include UserID
-        String sql = "SELECT UserID, Password FROM user WHERE Email = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, email);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                String storedPassword = rs.getString("Password");
-                user_id = rs.getInt("UserID"); // Corrected user ID retrieval
-                System.out.println("Attempting to authenticate:");
-                System.out.println("Email: " + email);
-                System.out.println("Stored Password: " + storedPassword);
-
-                // Assuming you have hashed passwords in your database
-                return verifyPassword(password, storedPassword);
-            } else {
-                // No user found
-                System.out.println("No user found with email: " + email);
+        try (Connection connection = Database.connectDb()) {
+            if (connection == null) {
+                showAlert("Error", "Failed to connect to the database.");
                 return false;
+            }
+
+            String sql = "SELECT UserID, Password FROM user WHERE Email = ?";
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setString(1, email);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    String storedPassword = rs.getString("Password");
+                    userId = rs.getInt("UserID");
+                    return verifyPassword(password, storedPassword);
+                }
+                return false; // No user found
             }
         } catch (SQLException e) {
             showAlert("Error", "Database error occurred: " + e.getMessage());
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            return false;
         }
-        return false;
     }
 
+    /**
+     * Verifies the input password against the stored hashed password.
+     * Replace this method's implementation with a proper hashing check (e.g., BCrypt).
+     *
+     * @param inputPassword       The password entered by the user.
+     * @param storedHashedPassword The hashed password stored in the database.
+     * @return true if the password matches, false otherwise.
+     */
     private boolean verifyPassword(String inputPassword, String storedHashedPassword) {
-        // Implement your hashing verification logic here
-        // For example, using BCrypt:
-        // return BCrypt.checkpw(inputPassword, storedHashedPassword);
-        return inputPassword.equals(storedHashedPassword); // Remove this after hashing implementation
+        // Implement proper hashing logic (e.g., BCrypt).
+        return inputPassword.equals(storedHashedPassword);
     }
 
-    private void openGamesPage() {
+    /**
+     * Navigates to the specified page.
+     *
+     * @param fxmlFile The FXML file to load.
+     * @param title    The title of the new scene.
+     */
+    private void navigateToPage(String fxmlFile, String title) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Games.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent root = loader.load();
             Stage stage = (Stage) signInButton.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Games"); // Set the title of the new scene
+            stage.setTitle(title);
             stage.show();
         } catch (IOException e) {
-            showAlert("Error", "Failed to load games page.");
+            showAlert("Error", "Failed to load " + title + " page.");
             e.printStackTrace();
         }
     }
 
+    /**
+     * Displays an alert dialog with the given title and message.
+     *
+     * @param title   The title of the alert.
+     * @param message The message to display in the alert.
+     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle(title);

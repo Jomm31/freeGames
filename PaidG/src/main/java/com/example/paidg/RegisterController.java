@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -17,6 +16,10 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
 
+/**
+ * Controller for the Registration Page.
+ * Handles user input, validation, and saving user data to the database.
+ */
 public class RegisterController {
 
     @FXML
@@ -40,44 +43,127 @@ public class RegisterController {
     @FXML
     private ToggleGroup genderToggleGroup;
 
+    /**
+     * Handles the Sign-Up button click event.
+     * Validates input, saves user data, and navigates to the Sign-In page if successful.
+     */
     @FXML
     protected void onSignUpButtonClick() {
-        maleRadio.setToggleGroup(genderToggleGroup);
-        othersRadio.setToggleGroup(genderToggleGroup);
-        femaleRadio.setToggleGroup(genderToggleGroup);
-        LocalDate birthday1 = birthdayPicker.getValue();
+        setupToggleGroup();
 
-        // Check if all required fields are filled out
-        if (firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty() ||
-                emailField.getText().isEmpty() || passwordField.getText().isEmpty() || birthday1 == null) {
-            showAlert("Error", "All fields must be filled out, including your birthday.");
-            return;
-        }
+        // Validate inputs
+        if (!areFieldsValid()) return;
 
-        // Get the selected gender
-        RadioButton selectedRadioButton = (RadioButton) genderToggleGroup.getSelectedToggle();
-        String gender = selectedRadioButton != null ? selectedRadioButton.getText() : "Not Specified"; // Handle case where no gender is selected
+        LocalDate birthday = birthdayPicker.getValue();
+        String gender = getSelectedGender();
 
         // Validate age
-        int age = Period.between(birthday1, LocalDate.now()).getYears();
-        if (age < 8) {
-            showAlert("Error", "You must be at least 8 years old to sign up");
-            return;
-        }
+        if (!isAgeValid(birthday)) return;
 
         // Save user to database
-        boolean isSaved = saveUserToDatabase(firstNameField.getText(), lastNameField.getText(),
-                emailField.getText(), passwordField.getText(), gender, birthday1);
-
-        if (isSaved) {
+        if (saveUserToDatabase(
+                firstNameField.getText(),
+                lastNameField.getText(),
+                emailField.getText(),
+                passwordField.getText(),
+                gender,
+                birthday
+        )) {
             showAlert("Success", "Account created successfully!");
-            goBackToSignIn();
+            navigateToSignInPage();
         } else {
             showAlert("Error", "Account creation failed.");
         }
     }
 
+    /**
+     * Sets up the toggle group for gender selection.
+     */
+    private void setupToggleGroup() {
+        maleRadio.setToggleGroup(genderToggleGroup);
+        othersRadio.setToggleGroup(genderToggleGroup);
+        femaleRadio.setToggleGroup(genderToggleGroup);
+    }
 
+    /**
+     * Validates that all required fields are filled.
+     *
+     * @return true if valid, false otherwise
+     */
+    private boolean areFieldsValid() {
+        if (firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty()
+                || emailField.getText().isEmpty() || passwordField.getText().isEmpty()
+                || birthdayPicker.getValue() == null) {
+            showAlert("Error", "All fields must be filled out, including your birthday.");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Gets the selected gender from the radio buttons.
+     *
+     * @return the selected gender or "Not Specified" if none selected
+     */
+    private String getSelectedGender() {
+        RadioButton selectedRadioButton = (RadioButton) genderToggleGroup.getSelectedToggle();
+        return selectedRadioButton != null ? selectedRadioButton.getText() : "Not Specified";
+    }
+
+    /**
+     * Validates that the user's age is at least 8 years.
+     *
+     * @param birthday the user's birthday
+     * @return true if valid, false otherwise
+     */
+    private boolean isAgeValid(LocalDate birthday) {
+        int age = Period.between(birthday, LocalDate.now()).getYears();
+        if (age < 8) {
+            showAlert("Error", "You must be at least 8 years old to sign up.");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Saves the user data to the database.
+     *
+     * @return true if saved successfully, false otherwise
+     */
+    private boolean saveUserToDatabase(String firstName, String lastName, String email, String password, String gender, LocalDate birthday) {
+        Connection connection = Database.connectDb();
+        if (connection != null) {
+            String sql = "INSERT INTO user (FirstName, LastName, Email, Password, Gender, Birthday) VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setString(1, firstName);
+                pstmt.setString(2, lastName);
+                pstmt.setString(3, email);
+                pstmt.setString(4, password); // Consider hashing the password for security
+                pstmt.setString(5, gender);
+                pstmt.setDate(6, Date.valueOf(birthday));
+
+                pstmt.executeUpdate();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Displays an alert dialog.
+     *
+     * @param title   the title of the alert
+     * @param message the message to display
+     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle(title);
@@ -86,7 +172,10 @@ public class RegisterController {
         alert.showAndWait();
     }
 
-    private void goBackToSignIn() {
+    /**
+     * Navigates to the Sign-In page.
+     */
+    private void navigateToSignInPage() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AccPage.fxml"));
             Pane signInPane = fxmlLoader.load();
@@ -96,35 +185,7 @@ public class RegisterController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Error", "Failed to load sign-in page.");
+            showAlert("Error", "Failed to load the sign-in page.");
         }
-    }
-
-    private boolean saveUserToDatabase(String firstName, String lastName, String email, String password, String gender, LocalDate birthday1) {
-        Connection connection = Database.connectDb();
-        if (connection != null) {
-            String sql = "INSERT INTO user (FirstName, LastName, Email, Password, Gender, Birthday) VALUES (?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-                pstmt.setString(1, firstName);
-                pstmt.setString(2, lastName);
-                pstmt.setString(3, email);
-                pstmt.setString(4, password); // Consider hashing this
-                pstmt.setString(5, gender);
-                pstmt.setDate(6, Date.valueOf(birthday1));
-
-                pstmt.executeUpdate();
-                return true; // User saved successfully
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return false; // Failed to save user
-            } finally {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return false; // No connection
     }
 }

@@ -1,7 +1,5 @@
 package com.example.paidg;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -11,8 +9,6 @@ import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import java.io.IOException;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class GameController {
 
@@ -23,30 +19,26 @@ public class GameController {
     private Button Logout;
 
     @FXML
-    private Button buyGodOfWar;
+    private Button downloadGTAV;
 
     @FXML
-    private Button buyGTAV;
+    private Button downloadSummertimeSAGA;
 
     @FXML
-    private Button buyStickman;
+    private Button downloadStickman;
 
     @FXML
-    private Button buyMinecraft;
+    private Button downloadMinecraft;
 
     @FXML
-    private Button buyRiseOfKingdoms;
+    private Button downloadRiseOfKingdoms;
 
     @FXML
-    private Button buyTheSleepingGirl;
+    private Button downloadSleepingGirl;
 
     @FXML
     private Button EditAccount;
 
-    private ObservableList<Transaction> transactionList = FXCollections.observableArrayList();
-    Connection con;
-    PreparedStatement ps;
-    ResultSet rs;
 
 
     @FXML
@@ -61,13 +53,13 @@ public class GameController {
         Logout.setOnAction(event -> handleLogout());
 
         // Add actions for buy buttons as needed
-        buyGodOfWar.setOnAction(event -> {
+        downloadGTAV.setOnAction(event -> {
             boolean h = false;
             if(!h){
                 BuyGodofwarr();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText(null);
-                alert.setContentText("successfully purchased");
+                alert.setContentText("Game has been downloaded successfully!");
                 alert.showAndWait();
                 h = true;
             } else {
@@ -80,13 +72,13 @@ public class GameController {
             }
         });
         // Repeat for other buttons...
-        buyGTAV.setOnAction(event ->  {
+        downloadSummertimeSAGA.setOnAction(event ->  {
             boolean h = false;
             if(!h){
                 BuyGTAVV();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText(null);
-                alert.setContentText("successfully purchased");
+                alert.setContentText("Game has been downloaded successfully!");
                 alert.showAndWait();
                 h = true;
             } else {
@@ -98,13 +90,13 @@ public class GameController {
                 alert.showAndWait();
             }
         });
-        buyStickman.setOnAction(event -> {;
+        downloadStickman.setOnAction(event -> {;
             boolean h = false;
             if(!h){
                 buyStickman();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText(null);
-                alert.setContentText("successfully purchased");
+                alert.setContentText("Game has been downloaded successfully!");
                 alert.showAndWait();
                 h = true;
             } else {
@@ -114,14 +106,14 @@ public class GameController {
                 alert.setContentText("Already purchased");
                 alert.showAndWait();
             }});
-        buyMinecraft.setOnAction(event ->  {
+        downloadMinecraft.setOnAction(event ->  {
 
             boolean h = false;
             if(!h){
                 buyminecar();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText(null);
-                alert.setContentText("successfully purchased");
+                alert.setContentText("Game has been downloaded successfully!");
                 alert.showAndWait();
                 h = true;
             } else {
@@ -132,14 +124,14 @@ public class GameController {
                 alert.showAndWait();
             }
         });
-        buyRiseOfKingdoms.setOnAction(event -> {
+        downloadRiseOfKingdoms.setOnAction(event -> {
 
             boolean h = false;
             if(!h){
                 buyRoK();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText(null);
-                alert.setContentText("successfully purchased");
+                alert.setContentText("Game has been downloaded successfully!");
                 alert.showAndWait();
                 h = true;
             } else {
@@ -151,13 +143,13 @@ public class GameController {
                 alert.showAndWait();
             }
         });
-        buyTheSleepingGirl.setOnAction(event ->  {
+        downloadSleepingGirl.setOnAction(event ->  {
             boolean h = false;
             if(!h){
                 buySG();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText(null);
-                alert.setContentText("successfully purchased");
+                alert.setContentText("Game has been downloaded successfully!");
                 alert.showAndWait();
                 h = true;
             } else {
@@ -205,7 +197,7 @@ public class GameController {
 
                 ps.setDate(1, new java.sql.Date(System.currentTimeMillis()));  // Set the formatted date
                 ps.setInt(2, gameId);                          // Set the game ID
-                ps.setInt(3, AccPageController.user_id);      // Set the user ID
+                ps.setInt(3, AccPageController.userId);      // Set the user ID
 
                 // Execute the update
                 ps.executeUpdate();

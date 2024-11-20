@@ -93,7 +93,7 @@ public class EditProfileController implements Initializable {
                 pstmt.setString(5, gender);
                 pstmt.setDate(6, java.sql.Date.valueOf(birthday));
                 pstmt.setString(7, email); // Assuming the email is unique and used to identify the user
-                pstmt.setInt(8, AccPageController.user_id);
+                pstmt.setInt(8, AccPageController.userId);
                 pstmt.executeUpdate();
                 return true; // User updated successfully
             } catch (SQLException e) {
