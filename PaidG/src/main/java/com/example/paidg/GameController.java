@@ -7,216 +7,45 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
+
 import java.io.IOException;
-import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameController {
 
     @FXML
-    private Button GamesBought;
-
+    private Button downloadGTAV, downloadSummertimeSAGA, downloadStickman, downloadMinecraft;
     @FXML
-    private Button Logout;
+    private Button downloadRiseOfKingdoms, downloadSleepingGirl, GamesBought, Logout, EditAccount;
 
-    @FXML
-    private Button downloadGTAV;
-
-    @FXML
-    private Button downloadSummertimeSAGA;
-
-    @FXML
-    private Button downloadStickman;
-
-    @FXML
-    private Button downloadMinecraft;
-
-    @FXML
-    private Button downloadRiseOfKingdoms;
-
-    @FXML
-    private Button downloadSleepingGirl;
-
-    @FXML
-    private Button EditAccount;
-
-
+    private Map<Button, Game> gameMap = new HashMap<>();
 
     @FXML
     public void initialize() {
+        // Initialize games
+        Game gtav = new PaidGame("GTA V", 1);
+        Game summertimeSaga = new PaidGame("Summertime Saga", 2);
+        Game stickman = new FreeGame("Stickman", 3);
+        Game minecraft = new PaidGame("Minecraft", 4);
+        Game riseOfKingdoms = new FreeGame("Rise of Kingdoms", 5);
+        Game sleepingGirl = new FreeGame("Sleeping Girl", 6);
 
+        // Map buttons to games
+        gameMap.put(downloadGTAV, gtav);
+        gameMap.put(downloadSummertimeSAGA, summertimeSaga);
+        gameMap.put(downloadStickman, stickman);
+        gameMap.put(downloadMinecraft, minecraft);
+        gameMap.put(downloadRiseOfKingdoms, riseOfKingdoms);
+        gameMap.put(downloadSleepingGirl, sleepingGirl);
 
+        // Set button actions
+        gameMap.forEach((button, game) -> button.setOnAction(event -> game.download()));
 
+        // Handle navigation buttons
         GamesBought.setOnAction(event -> openGamesBought());
-        EditAccount.setOnAction(event -> EditAccount());
-
-        // Initialize buttons and set actions
+        EditAccount.setOnAction(event -> openEditAccount());
         Logout.setOnAction(event -> handleLogout());
-
-        // Add actions for buy buttons as needed
-        downloadGTAV.setOnAction(event -> {
-            boolean h = false;
-            if(!h){
-                BuyGodofwarr();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText(null);
-                alert.setContentText("Game has been downloaded successfully!");
-                alert.showAndWait();
-                h = true;
-            } else {
-                buySG();
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setHeaderText(null);
-                alert.setTitle("Already purchased");
-                alert.setContentText("Already purchased");
-                alert.showAndWait();
-            }
-        });
-        // Repeat for other buttons...
-        downloadSummertimeSAGA.setOnAction(event ->  {
-            boolean h = false;
-            if(!h){
-                BuyGTAVV();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText(null);
-                alert.setContentText("Game has been downloaded successfully!");
-                alert.showAndWait();
-                h = true;
-            } else {
-                buySG();
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setHeaderText(null);
-                alert.setTitle("Already purchased");
-                alert.setContentText("Already purchased");
-                alert.showAndWait();
-            }
-        });
-        downloadStickman.setOnAction(event -> {;
-            boolean h = false;
-            if(!h){
-                buyStickman();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText(null);
-                alert.setContentText("Game has been downloaded successfully!");
-                alert.showAndWait();
-                h = true;
-            } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setHeaderText(null);
-                alert.setTitle("Already purchased");
-                alert.setContentText("Already purchased");
-                alert.showAndWait();
-            }});
-        downloadMinecraft.setOnAction(event ->  {
-
-            boolean h = false;
-            if(!h){
-                buyminecar();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText(null);
-                alert.setContentText("Game has been downloaded successfully!");
-                alert.showAndWait();
-                h = true;
-            } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setHeaderText(null);
-                alert.setTitle("Already purchased");
-                alert.setContentText("Already purchased");
-                alert.showAndWait();
-            }
-        });
-        downloadRiseOfKingdoms.setOnAction(event -> {
-
-            boolean h = false;
-            if(!h){
-                buyRoK();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText(null);
-                alert.setContentText("Game has been downloaded successfully!");
-                alert.showAndWait();
-                h = true;
-            } else {
-
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setHeaderText(null);
-                alert.setTitle("Already purchased");
-                alert.setContentText("Already purchased");
-                alert.showAndWait();
-            }
-        });
-        downloadSleepingGirl.setOnAction(event ->  {
-            boolean h = false;
-            if(!h){
-                buySG();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText(null);
-                alert.setContentText("Game has been downloaded successfully!");
-                alert.showAndWait();
-                h = true;
-            } else {
-
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setHeaderText(null);
-                alert.setTitle("Already purchased");
-                alert.setContentText("Already purchased");
-                alert.showAndWait();
-            }
-
-
-        });
-
-    }
-    public void buySG(){
-
-        executeTransaction(4);
-    }
-    public void buyRoK(){
-        executeTransaction(3);
-    }
-    public void buyminecar(){
-        executeTransaction(2);
-    }
-    public void buyStickman(){
-        executeTransaction(1);
-    }
-    public void BuyGTAVV(){
-        executeTransaction(6);
-    }
-    public void BuyGodofwarr(){
-        executeTransaction(5);
-    }
-
-    private void executeTransaction(int gameId) {
-        Connection con = null;
-        PreparedStatement ps = null;
-
-        try {
-            con = Database.connectDb();
-            if (con != null) {
-                String sql = "INSERT INTO transaction (Date, GameID, UserID) VALUES (?, ?, ?)";
-                ps = con.prepareStatement(sql);
-
-                ps.setDate(1, new java.sql.Date(System.currentTimeMillis()));  // Set the formatted date
-                ps.setInt(2, gameId);                          // Set the game ID
-                ps.setInt(3, AccPageController.userId);      // Set the user ID
-
-                // Execute the update
-                ps.executeUpdate();
-
-                // Optionally: Show success message or handle further logic here
-            }
-        } catch (SQLException e) {
-            // Handle SQL exceptions
-            e.printStackTrace(); // Log the exception for debugging
-            throw new RuntimeException("Error occurred while processing the transaction: " + e.getMessage());
-        } finally {
-            // Close resources in the finally block to ensure they're always closed
-            try {
-                if (ps != null) ps.close();
-                if (con != null) con.close();
-            } catch (SQLException e) {
-                e.printStackTrace(); // Log any exceptions that occur during closing
-            }
-        }
     }
 
     private void openGamesBought() {
@@ -228,33 +57,41 @@ public class GameController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+            showError("Failed to open Games Bought page.");
         }
     }
-    private void EditAccount(){
+
+    private void openEditAccount() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("EditProfile.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) GamesBought.getScene().getWindow();
+            Stage stage = (Stage) EditAccount.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+            showError("Failed to open Edit Account page.");
         }
     }
 
     private void handleLogout() {
         try {
-            // Load the AccPage.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("AccPage.fxml"));
             Scene scene = new Scene(loader.load());
-
-            // Get the current stage and set the new scene
             Stage stage = (Stage) Logout.getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle("Account Page");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+            showError("Failed to log out.");
         }
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
